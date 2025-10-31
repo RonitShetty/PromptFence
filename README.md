@@ -27,7 +27,7 @@ The **goal of this project** is to create and validate a specialized machine lea
 NLP is the foundational layer of this project.
 
 * **Tokenization:** The first step is to use a **tokenizer** (specifically, the BERT `WordPiece` tokenizer) to break down the raw prompt string into individual tokens or sub-words. This converts human language into a numerical format the model can understand.
-* **Baseline Modeling (TF-IDF):** Our initial exploration (`Copy_of_DL_+_NLP_Project (1).ipynb`) established a baseline using classical NLP. We used **TF-IDF (Term Frequency-Inverse Document Frequency)** to vectorize prompts based on keyword frequency. While this approach was good (97.6% accuracy on a simple dataset), it is brittle, as it relies on specific keywords ("ignore," "password") rather than true, contextual meaning.
+* **Baseline Modeling (TF-IDF):** Our initial exploration (`PromptFence_Evaluation_Pipeline.ipynb`) established a baseline using classical NLP. We used **TF-IDF (Term Frequency-Inverse Document Frequency)** to vectorize prompts based on keyword frequency. While this approach was good (97.6% accuracy on a simple dataset), it is brittle, as it relies on specific keywords ("ignore," "password") rather than true, contextual meaning.
 
 ---
 
@@ -37,7 +37,7 @@ To overcome the limitations of classical NLP, we use Deep Learning to understand
 
 * **Transformer Architecture (BERT):** We use a **BERT (Bidirectional Encoder Representations from Transformers)** model. This DL architecture reads the entire prompt at once, allowing it to understand that "ignore" in "ignore the typo" means something very different from "ignore all previous instructions."
 * **Sentence Embeddings:** The trained BERT model converts an entire prompt into a 768-dimension vector (an **embedding**). This vector mathematically represents the prompt's meaning.
-* **Contrastive Fine-Tuning (from `NLP+DL(2).ipynb`):** This is our core training technique. Instead of just showing the model one prompt and asking "is this good or bad?", we train it on *pairs* of prompts:
+* **Contrastive Fine-Tuning (from `PromptFence_Model_Training.ipynb`):** This is our core training technique. Instead of just showing the model one prompt and asking "is this good or bad?", we train it on *pairs* of prompts:
     * **Positive Pairs (Label 1.0):** Two "harmless" prompts are fed to the model, and it's trained to make their embeddings *semantically similar* (pulling them closer in vector space).
     * **Negative Pairs (Label 0.0):** A "harmless" and a "harmful" prompt are fed to the model, and it's trained to make their embeddings *semantically distant* (pushing them far apart).
 
@@ -47,7 +47,7 @@ This process re-trains the BERT model to create a vector space where all harmful
 
 ## 4. Benchmark & Evaluation
 
-We ran a comprehensive evaluation pipeline (`Copy_of_DL_+_NLP_Project (1).ipynb`) on a large dataset of **58,567 prompts** (41,000 harmless, 17,567 harmful). This test compared our fine-tuned "PromptFence" model against 5 popular, "off-the-shelf" baseline models.
+We ran a comprehensive evaluation pipeline (`PromptFence_Evaluation_Pipeline.ipynb`) on a large dataset of **58,567 prompts** (41,000 harmless, 17,567 harmful). This test compared our fine-tuned "PromptFence" model against 5 popular, "off-the-shelf" baseline models.
 
 ### Final Comparison Table
 
@@ -73,7 +73,7 @@ The results clearly show that **fine-tuning is essential**. Our custom model dra
 
 ## 5. Domain-Shift Tests
 
-The model was also tested on small, completely new datasets from different domains (in `NLP+DL(2).ipynb`) to check its generalization.
+The model was also tested on small, completely new datasets from different domains (in `PromptFence_Model_Training.ipynb`) to check its generalization.
 
 * **Healthcare Domain Test:** (20 new prompts)
     * **Accuracy: 95.0%**
